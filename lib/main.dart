@@ -1,12 +1,22 @@
 
 import 'package:apirestfluttelist/Count/counter_fuction_screen.dart';
+import 'package:apirestfluttelist/Count/models/CounterProvider.dart';
 // import 'package:apirestfluttelist/models/counter_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-void main(){
-  runApp(const Myapp());
+
+
+void main() {
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => CounterProvider()),
+      ],
+      child: const Myapp(),
+    ),
+  );
 }
-
 class Myapp extends StatelessWidget {
   const Myapp({super.key});
 

@@ -1,6 +1,7 @@
 import 'package:apirestfluttelist/Count/components/Custom_Button.dart';
-import 'package:apirestfluttelist/Count/models/contador_dto.dart';
+import 'package:apirestfluttelist/Count/models/CounterProvider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class CounterFuctionScreen extends StatefulWidget {
   const CounterFuctionScreen({super.key});
@@ -12,24 +13,16 @@ class CounterFuctionScreen extends StatefulWidget {
 class _CounterFuctionScreenState extends State<CounterFuctionScreen> {
   @override
   Widget build(BuildContext context) {
-    CustomButton(
-      icon: Icons.menu_open,
-      onPressed: () {
-        if (!validarValoresMenosCeros()) return;
-        clickCounter--;
-        setState(() {});
-      },
-    );
+    final counterProvider = Provider.of<CounterProvider>(context);
+
     return Scaffold(
         appBar: AppBar(
-          title: const Text(tituloPrincipal),
+          title: const Text('Contador Principal'),
           actions: [
             IconButton(
               icon: const Icon(Icons.refresh),
               onPressed: () {
-                setState(() {
-                  clickCounter = 0;
-                });
+                counterProvider.reset();
               },
             ),
             IconButton(
@@ -39,42 +32,40 @@ class _CounterFuctionScreenState extends State<CounterFuctionScreen> {
           ],
         ),
         body: Center(
-            child:
-                Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-          const Text(
-            tituloWidget,
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.w200),
-          ),
-          Text(
-            '$clickCounter',
-            style: const TextStyle(fontSize: 40, fontWeight: FontWeight.w200),
-          )
-        ])),
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text(
+                    'Contador',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w200),
+                  ),
+                  Text(
+                    '${counterProvider.clickCounter}',
+                    style: const TextStyle(fontSize: 40, fontWeight: FontWeight.w200),
+                  )
+                ])),
         floatingActionButton: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             CustomButton(
               icon: Icons.plus_one,
               onPressed: () {
-                clickCounter++;
-                setState(() {});
+                counterProvider.increment();
               },
             ),
             const SizedBox(height: 10),
             CustomButton(
               icon: Icons.exposure_minus_1_outlined,
               onPressed: () {
-                if (!validarValoresMenosCeros()) return;
-                clickCounter--;
-                setState(() {});
+                if (!validarValoresMenosCeros(counterProvider.clickCounter)) return;
+                counterProvider.decrement();
               },
             ),
             const SizedBox(height: 10),
             CustomButton(
               icon: Icons.call_missed_outgoing_rounded,
               onPressed: () {
-                clickCounter=clickCounter*clickCounter;
-                setState(() {});
+                counterProvider.square();
               },
             ),
           ],
@@ -82,6 +73,6 @@ class _CounterFuctionScreenState extends State<CounterFuctionScreen> {
   }
 }
 
-bool validarValoresMenosCeros() {
+bool validarValoresMenosCeros(int clickCounter) {
   return clickCounter > 0;
 }
