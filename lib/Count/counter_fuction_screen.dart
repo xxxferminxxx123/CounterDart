@@ -11,6 +11,7 @@ class CounterFuctionScreen extends StatefulWidget {
 }
 
 class _CounterFuctionScreenState extends State<CounterFuctionScreen> {
+
   @override
   Widget build(BuildContext context) {
     final counterProvider = Provider.of<CounterProvider>(context);
@@ -57,7 +58,6 @@ class _CounterFuctionScreenState extends State<CounterFuctionScreen> {
             CustomButton(
               icon: Icons.exposure_minus_1_outlined,
               onPressed: () {
-                if (!validarValoresMenosCeros(counterProvider.clickCounter)) return;
                 counterProvider.decrement();
               },
             ),
@@ -73,6 +73,4 @@ class _CounterFuctionScreenState extends State<CounterFuctionScreen> {
   }
 }
 
-bool validarValoresMenosCeros(int clickCounter) {
-  return clickCounter > 0;
-}
+
